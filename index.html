@@ -3,86 +3,203 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>ClikCoin - Aplikasi Monetisasi Video</title>
+<title>ClikCoin - Monetisasi Video</title>
 <style>
 * { margin: 0; padding: 0; box-sizing: border-box; }
-body { font-family: 'Segoe UI', Arial; background: #0d0d0d; color: #eee; padding: 15px; }
+body { 
+  font-family: 'Segoe UI', Arial; 
+  background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%); 
+  color: #eee; 
+  padding: 15px; 
+  min-height: 100vh;
+}
 .container { max-width: 600px; margin: 0 auto; }
-.logo { color: gold; font-size: 28px; font-weight: bold; text-align: center; margin-bottom: 20px; }
-.video-wrapper { position: relative; border-radius: 15px; overflow: hidden; border: 2px solid gold; }
-#videoPlayer { width: 100%; display: block; }
-#adBox { background: rgba(0,0,0,0.95); color: gold; display: none; position: absolute; width: 100%; height: 100%; top: 0; left: 0; z-index: 10; align-items: center; justify-content: center; flex-direction: column; }
-.btn { background: linear-gradient(90deg, gold, #ffcc00); color: #000; padding: 14px; border: none; border-radius: 10px; cursor: pointer; font-weight: bold; margin-top: 12px; width: 100%; font-size: 16px; }
-.btn:hover { opacity: 0.9; }
-.badge { color: gold; font-weight: bold; margin-top: 8px; text-align: center; }
-.card { background: #1a1a1a; padding: 15px; border-radius: 12px; margin-top: 20px; font-size: 14px; border-left: 4px solid gold; }
-.card h3 { color: gold; margin-bottom: 10px; }
-.koin { color: #ffcc00; font-weight: bold; }
+.logo { 
+  color: gold; 
+  font-size: 32px; 
+  font-weight: bold; 
+  text-align: center; 
+  margin-bottom: 20px;
+  text-shadow: 0 0 10px gold;
+}
+.video-wrapper { 
+  position: relative; 
+  border-radius: 20px; 
+  overflow: hidden; 
+  border: 3px solid gold; 
+  box-shadow: 0 0 25px rgba(255,215,0,0.5);
+}
+#videoPlayer { width: 100%; display: block; background: #000; min-height: 200px; }
+#adBox { 
+  background: rgba(0,0,0,0.95); 
+  color: gold; 
+  display: none; 
+  position: absolute; 
+  width: 100%; 
+  height: 100%; 
+  top: 0; 
+  left: 0; 
+  z-index: 10; 
+  align-items: center; 
+  justify-content: center; 
+  flex-direction: column; 
+}
+.btn { 
+  background: linear-gradient(90deg, #FFD700, #FFA500); 
+  color: #000; 
+  padding: 16px; 
+  border: none; 
+  border-radius: 12px; 
+  cursor: pointer; 
+  font-weight: bold; 
+  margin-top: 15px; 
+  width: 100%; 
+  font-size: 16px;
+}
+.btn:disabled { opacity: 0.5; cursor: not-allowed; }
+.badge { color: gold; font-weight: bold; margin-top: 10px; text-align: center; }
+.card { 
+  background: rgba(26,26,26,0.8); 
+  padding: 18px; 
+  border-radius: 15px; 
+  margin-top: 20px; 
+  font-size: 14px; 
+  border: 1px solid rgba(255,215,0,0.3);
+}
+.card h3 { color: gold; margin-bottom: 12px; }
+.koin { color: #ffcc00; font-weight: bold; font-size: 18px; }
+.admin-panel {
+  background: rgba(255,0,0,0.08);
+  border: 2px dashed gold;
+  padding: 15px;
+  border-radius: 12px;
+  margin-top: 20px;
+}
+.admin-panel input {
+  width: 100%;
+  padding: 10px;
+  margin-top: 8px;
+  margin-bottom: 12px;
+  border-radius: 8px;
+  border: 1px solid gold;
+  background: #0d0d0d;
+  color: white;
+}
+small { color: #aaa; font-size: 12px; }
 </style>
 </head>
 <body>
 <div class="container">
 
 <div class="logo">🪙 CLIKCOIN</div>
-<h2 style="text-align:center; margin-bottom:15px;">Monetisasi Video Terpercaya</h2>
+<h2 style="text-align:center; margin-bottom:20px; color:#FFD700;">Monetisasi Konten Video</h2>
 
-<!-- VIDEO + CLIKCOIN ADS -->
+<!-- VIDEO + IKLAN 5 DETIK -->
 <div class="video-wrapper">
   <div id="adBox">
-    <p style="font-size: 24px;">📢 CLIKCOIN ADS</p>
-    <p style="margin-top: 10px;">Skip dalam <span id="timer">5</span> detik</p>
-    <small>Nonton iklan = Kamu + Kreator dapet Koin</small>
+    <p style="font-size: 26px; font-weight:bold;">📢 CLIKCOIN ADS</p>
+    <p style="margin-top: 12px; font-size:18px;">Skip dalam <span id="timer">5</span> detik</p>
+    <small>Nonton = Kamu + Kreator dapet Koin</small>
   </div>
-  <video id="videoPlayer" controls poster="thumbnail.jpg">
-    <source src="video-kreator.mp4" type="video/mp4">
+  <video id="videoPlayer" controls poster="">
+    <source id="videoSource" src="" type="video/mp4">
   </video>
 </div>
 
-<!-- CLIKCOIN PREMIUM / VIP -->
+<!-- PANEL ADMIN - MUNCUL KALO URL +?admin=true -->
+<div class="admin-panel" id="adminPanel" style="display:none;">
+  <h3>⚙️ PANEL ADMIN CLIKCOIN</h3>
+  <label>Link Video MP4 Langsung:</label>
+  <input type="text" id="inputVideo" placeholder="https://drive.google.com/uc?export=download&id=xxx">
+  
+  <label>Link Thumbnail JPG:</label>
+  <input type="text" id="inputThumb" placeholder="https://i.imgur.com/xxx.jpg">
+  
+  <button class="btn" onclick="updateVideo()">Update Video Sekarang</button>
+  <small>Aturan: Link harus .mp4 langsung. YouTube gak bisa. Update → Semua user langsung ganti</small>
+</div>
+
+<!-- VIP PREMIUM -->
 <button id="vipButton" class="btn">👑 UPGRADE CLIKCOIN VIP - 15.000 Koin / 30 Hari</button>
 <p id="statusVip" class="badge"></p>
+<div id="vipBadgeBox" style="text-align:center; display:none; margin-top:15px;">
+  <p style="font-size:40px;">👑</p>
+  <p style="color:gold; font-weight:bold;">MEMBER VIP PREMIUM AKTIF</p>
+</div>
 
-<!-- DOMPET CLIKCOIN KREATOR -->
+<!-- DOMPET KREATOR -->
 <div class="card">
   <h3>💰 DOMPET CLIKCOIN KREATOR</h3>
   <p>Saldo Koin: <span class="koin" id="saldoKreator">0</span> Koin</p>
   <small>Aturan: 1x iklan ditonton = Kreator +30 Koin, ClikCoin +70 Koin</small>
-  <button class="btn" onclick="wdKreator()">Tarik Koin ke DANA</button>
+  <button class="btn" id="wdButton" onclick="wdKreator()">Tarik Koin ke DANA</button>
 </div>
 
-<!-- SYARAT KETENTUAN CLIKCOIN -->
+<!-- SYARAT KETENTUAN -->
 <div class="card">
-  <h3>📜 SYARAT & KETENTUAN CLIKCOIN</h3>
-  <b>1. ClikCoin Ads:</b> Iklan 5 detik di awal video. 1x per play.<br>
-  <b>2. ClikCoin Premium:</b> 15.000 Koin aktif 30 hari. Non-refund.<br>
-  <b>3. Member VIP:</b> Bebas iklan + badge 👑 selama Premium aktif.<br>
-  <b>4. Smart Ads:</b> Dilarang klik iklan sendiri. Ketahuan = banned permanen.<br>
-  <b>5. Dompet Kreator:</b> Bagi hasil 30:70. WD min 50rb Koin, proses 1x3 hari kerja.
+  <h3>📜 SYARAT & KETENTUAN</h3>
+  <b>1. ClikCoin Ads:</b> Iklan 5 detik di awal. 1x per play.<br>
+  <b>2. ClikCoin Premium:</b> 15.000 Koin aktif 30 hari.<br>
+  <b>3. Member VIP:</b> Bebas iklan + badge 👑.<br>
+  <b>4. Smart Ads:</b> Dilarang klik iklan sendiri = banned.<br>
+  <b>5. Dompet Kreator:</b> Bagi 30:70. WD min 50rb Koin.
 </div>
 
 </div>
 
 <script>
-// ===== SETTING AWAL CLIKCOIN =====
+// ===== 1. AMBIL DATA DARI LOCALSTORAGE GITHUB PAGES =====
+let videoLink = localStorage.getItem('clikcoin_video') || '';
+let thumbLink = localStorage.getItem('clikcoin_thumb') || '';
 let isVip = localStorage.getItem('clikcoin_vip') === 'true'; 
 let iklanUdahMuncul = false;
 let saldoKreator = parseInt(localStorage.getItem('clikcoin_saldo') || '0');
 
 const video = document.getElementById('videoPlayer');
+const videoSource = document.getElementById('videoSource');
 const adBox = document.getElementById('adBox');
 const vipButton = document.getElementById('vipButton');
 const statusVip = document.getElementById('statusVip');
 const saldoEl = document.getElementById('saldoKreator');
+const wdButton = document.getElementById('wdButton');
+const vipBadgeBox = document.getElementById('vipBadgeBox');
+
+// Set video awal
+videoSource.src = videoLink;
+video.poster = thumbLink;
 saldoEl.innerText = saldoKreator.toLocaleString('id-ID');
 
-// ===== ATURAN CLIKCOIN PREMIUM + VIP =====
+// ===== 2. PANEL ADMIN UPDATE VIDEO =====
+const urlParams = new URLSearchParams(window.location.search);
+if(urlParams.get('admin') === 'true') {
+  document.getElementById('adminPanel').style.display = 'block';
+  document.getElementById('inputVideo').value = videoLink;
+  document.getElementById('inputThumb').value = thumbLink;
+}
+
+function updateVideo() {
+  let newVideo = document.getElementById('inputVideo').value.trim();
+  let newThumb = document.getElementById('inputThumb').value.trim();
+  
+  if(!newVideo || !newVideo.includes('.mp4')) {
+    alert('Link video harus .mp4 langsung gob. Contoh: drive.google.com/uc?export=download&id=xxx');
+    return;
+  }
+  
+  localStorage.setItem('clikcoin_video', newVideo);
+  localStorage.setItem('clikcoin_thumb', newThumb);
+  alert('Video berhasil diupdate! Refresh halaman buat cek');
+  location.reload();
+}
+
+// ===== 3. LOGIKA VIP 30 HARI =====
 function cekVipExpired() {
   let expired = localStorage.getItem('clikcoin_expired');
   if(expired && Date.now() > parseInt(expired)) {
     localStorage.removeItem('clikcoin_vip');
     localStorage.removeItem('clikcoin_expired');
     isVip = false;
-    alert('ClikCoin VIP lu udah expired. Top up 15.000 Koin lagi ya');
+    alert('ClikCoin VIP expired. Top up 15.000 Koin lagi');
     location.reload();
   }
 }
@@ -90,10 +207,10 @@ cekVipExpired();
 
 if(isVip) {
   vipButton.style.display = 'none';
-  statusVip.innerText = '👑 MEMBER CLIKCOIN VIP AKTIF';
+  statusVip.innerText = '';
+  vipBadgeBox.style.display = 'block';
 } else {
-  statusVip.innerText = 'Status: Gratisan - Wajib nonton ClikCoin Ads 5 detik';
-  
+  statusVip.innerText = 'Status: Gratisan - Wajib nonton iklan 5 detik';
   vipButton.onclick = function() {
     if(confirm('Beli ClikCoin Premium 15.000 Koin via Dana/QRIS? Klik OK kalo udah bayar')) {
       localStorage.setItem('clikcoin_vip', 'true');
@@ -103,11 +220,12 @@ if(isVip) {
   }
 }
 
-// ===== ATURAN CLIKCOIN ADS =====
+// ===== 4. LOGIKA IKLAN 5 DETIK =====
 video.addEventListener('play', function() {
   if(isVip) return;
   if(iklanUdahMuncul) return;
   if(video.currentTime > 3) return;
+  if(!videoLink) return;
 
   iklanUdahMuncul = true;
   video.pause();
@@ -122,13 +240,17 @@ video.addEventListener('play', function() {
       adBox.style.display = 'none';
       video.play();
       
-      // ===== ATURAN DOMPET KREATOR =====
       saldoKreator += 30;
       localStorage.setItem('clikcoin_saldo', saldoKreator);
       saldoEl.innerText = saldoKreator.toLocaleString('id-ID');
       
-      console.log('ClikCoin Ads selesai | Kreator +30 Koin | Admin +70 Koin');
+      if(saldoKreator >= 50000) {
+        wdButton.disabled = false;
+        wdButton.innerText = 'Tarik Koin ke DANA';
+      }
+      
       // TEMPEL KODE GOOGLE ADSENSE DISINI
+      console.log('ClikCoin Ads selesai | Kreator +30 Koin');
     }
   }, 1000);
 });
@@ -137,16 +259,20 @@ video.addEventListener('ended', function() {
   iklanUdahMuncul = false;
 });
 
-// ===== ATURAN WD KREATOR =====
+// ===== 5. LOGIKA WD KREATOR =====
+if(saldoKreator < 50000) {
+  wdButton.disabled = true;
+  wdButton.innerText = 'Saldo Belum 50rb Koin';
+}
+
 function wdKreator() {
-  if(saldoKreator < 50000) {
-    alert('Saldo ClikCoin belum 50.000 Koin. Rajin upload dulu gob');
-    return;
-  }
+  if(saldoKreator < 50000) return;
   alert('Request WD ' + saldoKreator.toLocaleString('id-ID') + ' Koin = Rp ' + saldoKreator.toLocaleString('id-ID') + ' dikirim. Admin transfer H+3 kerja');
   localStorage.setItem('clikcoin_saldo', '0');
   saldoKreator = 0;
   saldoEl.innerText = '0';
+  wdButton.disabled = true;
+  wdButton.innerText = 'Saldo Belum 50rb Koin';
 }
 </script>
 </body>
